@@ -1,28 +1,31 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
+	"database/sql"
+
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
+var db *sql.DB
 
-var DB *sql.DB
-
-func InitDB() {
-	godotenv.Load()
-	url := os.Getenv("DATABASE_URL")
+func InitDB() error {
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		log.Fatal("La variable DATABASE_URL no está definida")
+	}
 
 	var err error
-	DB, err = sql.Open("pgx", url)
+	db, err = sql.Open("pgx", dsn)
 	if err != nil {
-		log.Fatal("Error abriendo DB: ", err)
+		return err
 	}
-
-	if err := DB.Ping(); err != nil {
-		log.Fatal("Error conectando a DB: ", err)
+	err = db.Ping()
+	if err != nil {
+		return err
 	}
+	log.Println("Conectado a la base de datos")
+	return nil
 }

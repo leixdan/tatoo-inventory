@@ -1,4 +1,14 @@
 {{define "content"}}
 <h1 class="text-2xl font-bold mb-4">Editar Material</h1>
 <form action="/update" method="post" class="space-y-4">
-    <
+    <input type="hidden" name="id" value="{{.ID}}">
+    
+    <input name="name" value="{{.Name}}" placeholder="Nombre" class="w-full p-2 border rounded">
+    
+    <input name="quantity" type="number" value="{{.Quantity}}" placeholder="Cantidad" class="w-full p-2 border rounded">
+    
+    <textarea name="description" placeholder="Descripción" class="w-full p-2 border rounded">{{.Description}}</textarea>
+    
+    <button class="bg-blue-500 text-white px-4 py-2 rounded">Actualizar</button>
+</form>
+{{end}}
